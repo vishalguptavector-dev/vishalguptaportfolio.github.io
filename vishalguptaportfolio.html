@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vishal Gupta | Video Editor & Graphic Designer</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandRed: '#e50914',
+                        darkBg: '#0f0f11',
+                        cardBg: '#1a1a1c',
+                        textMuted: '#a1a1aa'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 1s ease-out forwards',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        
+        body {
+            background-color: #0f0f11;
+            color: #f4f4f5;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f11;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e50914;
+        }
+
+        .hero-bg {
+            background: linear-gradient(to bottom, rgba(15, 15, 17, 0.3), rgba(15, 15, 17, 1)), 
+                        url('https://images.unsplash.com/photo-1600831761614-25e1a7de3fb9?q=80&w=2070') center/cover no-repeat;
+            background-attachment: fixed;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-brandRed selection:text-white">
+
+    <nav class="fixed w-full z-50 top-0 transition-all duration-300 bg-darkBg/80 backdrop-blur-md border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="#" class="text-xl font-bold tracking-wider text-white">VG<span class="text-brandRed">.</span></a>
+            <div class="hidden md:flex space-x-8 text-sm font-semibold text-gray-300">
+                <a href="#about" class="hover:text-brandRed transition-colors">About</a>
+                <a href="#work" class="hover:text-brandRed
