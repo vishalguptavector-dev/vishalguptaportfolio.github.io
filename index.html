@@ -1,108 +1,39 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vishal Gupta | Video Editor & Graphic Designer</title>
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        brandRed: '#e50914',
-                        darkBg: '#0f0f11',
-                        cardBg: '#1a1a1c',
-                        textMuted: '#a1a1aa'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
-                    }
-                }
-            }
-        }
+<script>
+        // Load the IFrame Player API code asynchronously.
+        var tag = document.createElement('script');
+        tag.src = "https://www.youtube.com/iframe_api";
+        var firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
     </script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
-        
-        body {
-            background-color: #0f0f11;
-            color: #f4f4f5;
-        }
-        
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #0f0f11;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #3f3f46;
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #e50914;
-        }
 
-        .hero-bg {
-            background: linear-gradient(to bottom, rgba(15, 15, 17, 0.4), rgba(15, 15, 17, 0.9)), 
-                        url('https://images.unsplash.com/photo-1600831761614-25e1a7de3fb9?q=80&w=2070') center/cover no-repeat;
-            background-attachment: fixed;
-        }
+    <script>
+        // --- Video Database (Supplied by User) ---
+        const videoDB = {
+            main: {
+                ids: ['wS2XtFlEMKY', 'OlCqiGAYPNA', 'u6kw2EYrum0', 'RrxIA9gnR5Q', '-crpMZ9l49c', 'wBy3Hnla4Ic', 'UcUrXZSwZWs', 'HK8NOKBGYVc'],
+                random: false // Plays in order
+            },
+            reel1: {
+                ids: ['cA_na6OGBaI', 'dTjRd6gBjA4', 'AYOXFYxpqAc', 'MU3jcCUJsSg', '6RqzDfxwnnY'], // Added new short here!
+                random: true  // Plays randomly on loop
+            },
+            reel2: {
+                ids: ['nrCSTQnyfi0', 'uAvtgX64caY', 'hr9rUB_c0Po', 'KFzTz6IQy8U'],
+                random: true
+            },
+            reel3: {
+                ids: ['vp7kfOlr470', 'U7kWzz8BGnY', 'ZC0uTm5UbT4', 'G7XOUT5Q2e0', 'u6xgZxMrTT4'],
+                random: true
+            }
+        };
 
-        /* --- Apple Glossy & Fluid Effects --- */
-        
-        /* Fluid Animated Background */
-        .fluid-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -1;
-            overflow: hidden;
-            pointer-events: none;
-        }
-        .fluid-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(90px);
-            opacity: 0.35;
-            animation: float 20s infinite ease-in-out alternate;
-        }
-        .orb-1 { 
-            top: -10%; left: -10%; width: 50vw; height: 50vw; 
-            background: radial-gradient(circle, rgba(229,9,20,0.4) 0%, rgba(0,0,0,0) 70%); 
-        }
-        .orb-2 { 
-            bottom: -10%; right: -10%; width: 60vw; height: 60vw; 
-            background: radial-gradient(circle, rgba(150,10,30,0.3) 0%, rgba(0,0,0,0) 70%); 
-            animation-delay: -5s; 
-            animation-direction: alternate-reverse;
-        }
+        const ytPlayers = {};
+        const progressIntervals = {};
 
-        @keyframes float {
-            0% { transform: translate(0, 0) scale(1); }
-            50% { transform: translate(5%, 5%) scale(1.05); }
-            100% { transform: translate(-5%, 10%) scale(0.95); }
-        }
+        // --- YouTube API Required Global Function ---
 
-        /* Frosted Glass Cards */
-        .glass-card {
-            background: rgba(26, 26, 28, 0.4);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
-        }
 
-        /* Glossy Shine Hover Effect */
-        .glossy-hover {
-            position: relative;
-            overflow: hidden;
-        }
+
         .glossy-hover::before {
             content: '';
             position: absolute;
