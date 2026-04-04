@@ -1,39 +1,108 @@
-<script>
-        // Load the IFrame Player API code asynchronously.
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    </script>
-
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vishal Gupta | Video Editor & Graphic Designer</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <script>
-        // --- Video Database (Supplied by User) ---
-        const videoDB = {
-            main: {
-                ids: ['wS2XtFlEMKY', 'OlCqiGAYPNA', 'u6kw2EYrum0', 'RrxIA9gnR5Q', '-crpMZ9l49c', 'wBy3Hnla4Ic', 'UcUrXZSwZWs', 'HK8NOKBGYVc'],
-                random: false // Plays in order
-            },
-            reel1: {
-                ids: ['cA_na6OGBaI', 'dTjRd6gBjA4', 'AYOXFYxpqAc', 'MU3jcCUJsSg', '6RqzDfxwnnY'], // Added new short here!
-                random: true  // Plays randomly on loop
-            },
-            reel2: {
-                ids: ['nrCSTQnyfi0', 'uAvtgX64caY', 'hr9rUB_c0Po', 'KFzTz6IQy8U'],
-                random: true
-            },
-            reel3: {
-                ids: ['vp7kfOlr470', 'U7kWzz8BGnY', 'ZC0uTm5UbT4', 'G7XOUT5Q2e0', 'u6xgZxMrTT4'],
-                random: true
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandRed: '#e50914',
+                        darkBg: '#0f0f11',
+                        cardBg: '#1a1a1c',
+                        textMuted: '#a1a1aa'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', 'sans-serif'],
+                    }
+                }
             }
-        };
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        
+        body {
+            background-color: #0f0f11;
+            color: #f4f4f5;
+        }
+        
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f0f11;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3f3f46;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e50914;
+        }
 
-        const ytPlayers = {};
-        const progressIntervals = {};
+        .hero-bg {
+            background: linear-gradient(to bottom, rgba(15, 15, 17, 0.4), rgba(15, 15, 17, 0.9)), 
+                        url('https://images.unsplash.com/photo-1600831761614-25e1a7de3fb9?q=80&w=2070') center/cover no-repeat;
+            background-attachment: fixed;
+        }
 
-        // --- YouTube API Required Global Function ---
+        /* --- Apple Glossy & Fluid Effects --- */
+        
+        /* Fluid Animated Background */
+        .fluid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .fluid-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(90px);
+            opacity: 0.35;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .orb-1 { 
+            top: -10%; left: -10%; width: 50vw; height: 50vw; 
+            background: radial-gradient(circle, rgba(229,9,20,0.4) 0%, rgba(0,0,0,0) 70%); 
+        }
+        .orb-2 { 
+            bottom: -10%; right: -10%; width: 60vw; height: 60vw; 
+            background: radial-gradient(circle, rgba(150,10,30,0.3) 0%, rgba(0,0,0,0) 70%); 
+            animation-delay: -5s; 
+            animation-direction: alternate-reverse;
+        }
 
+        @keyframes float {
+            0% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(5%, 5%) scale(1.05); }
+            100% { transform: translate(-5%, 10%) scale(0.95); }
+        }
 
+        /* Frosted Glass Cards */
+        .glass-card {
+            background: rgba(26, 26, 28, 0.4);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3), inset 0 1px 1px 0 rgba(255, 255, 255, 0.15);
+        }
 
+        /* Glossy Shine Hover Effect */
+        .glossy-hover {
+            position: relative;
+            overflow: hidden;
+        }
         .glossy-hover::before {
             content: '';
             position: absolute;
@@ -291,473 +360,4 @@
                         <div id="yt-player-reel-3" class="w-full h-full scale-[1.3] md:scale-[1.1]"></div>
                     </div>
                     <!-- Controls -->
-                    <button class="mute-toggle absolute top-4 right-4 z-20 w-10 h-10 glass-card hover:bg-brandRed rounded-full flex items-center justify-center text-white transition-all duration-300 glossy-hover">
-                        <i class="fa-solid fa-volume-xmark"></i>
-                    </button>
-                    <!-- Timeline -->
-                    <div class="absolute bottom-0 left-0 w-full h-1.5 bg-white/10 z-20 backdrop-blur-sm">
-                        <div class="progress-bar h-full bg-brandRed w-0 transition-all duration-[250ms] ease-linear shadow-[0_0_15px_rgba(229,9,20,0.9)] relative">
-                            <div class="absolute top-0 left-0 w-full h-[1px] bg-white/50"></div>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </section>
-
-        <!-- Portfolio Section (LIST FORMAT - Archive) -->
-        <section id="work" class="scroll-mt-24">
-            <div class="text-center mb-16">
-                <div class="animate-on-scroll glass-card inline-block px-4 py-1 rounded-full text-brandRed font-semibold text-sm mb-4" data-delay="0">
-                    Archive
-                </div>
-                <h2 class="animate-on-scroll text-3xl md:text-5xl font-bold text-white" data-delay="100">Project Links</h2>
-                <p class="animate-on-scroll text-gray-300 mt-4 max-w-2xl mx-auto" data-delay="200">Standard links to my recent automotive edits across YouTube and Instagram.</p>
-            </div>
-
-            <!-- List Container -->
-            <div class="max-w-5xl mx-auto flex flex-col gap-5">
-                
-                <!-- List Item 1 -->
-                <div class="animate-on-scroll group glass-card glossy-hover rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(229,9,20,0.15)] hover:border-brandRed/50 flex flex-col md:flex-row w-full" data-delay="100">
-                    <div class="w-full md:w-1.5 bg-brandRed h-1.5 md:h-auto z-20"></div>
-                    <div class="p-6 flex-grow flex flex-col md:flex-row items-start md:items-center gap-6 z-20">
-                        <div class="w-14 h-14 flex-shrink-0 bg-red-500/10 rounded-full flex items-center justify-center border border-brandRed/20 shadow-inner">
-                            <i class="fa-brands fa-instagram text-2xl text-brandRed group-hover:scale-110 transition-transform"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-brandRed transition-colors">Latest Automotive Reel</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">High-impact visual storytelling and dynamic editing for social media.</p>
-                        </div>
-                        <a href="https://www.instagram.com/reel/DVxiOfqjSXA/?igsh=MWVzeDk5Y2ZoM2w1Nw==" target="_blank" class="mt-4 md:mt-0 w-full md:w-auto inline-flex items-center justify-center px-6 py-3 glass-card rounded-lg text-sm font-bold text-white group-hover:bg-brandRed group-hover:border-brandRed transition-colors whitespace-nowrap glossy-hover">
-                            Watch Video <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- List Item 2 -->
-                <div class="animate-on-scroll group glass-card glossy-hover rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(229,9,20,0.15)] hover:border-brandRed/50 flex flex-col md:flex-row w-full" data-delay="200">
-                    <div class="w-full md:w-1.5 bg-brandRed h-1.5 md:h-auto z-20"></div>
-                    <div class="p-6 flex-grow flex flex-col md:flex-row items-start md:items-center gap-6 z-20">
-                        <div class="w-14 h-14 flex-shrink-0 bg-red-500/10 rounded-full flex items-center justify-center border border-brandRed/20 shadow-inner">
-                            <i class="fa-brands fa-youtube text-2xl text-brandRed group-hover:scale-110 transition-transform"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-brandRed transition-colors">Skoda Kushaq Walkaround</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">Long-form video editing and detailed presentation showcasing exterior and interior features.</p>
-                        </div>
-                        <a href="https://youtu.be/WfD14rPWmTI?si=ejwGvjLadaI-_Lyz" target="_blank" class="mt-4 md:mt-0 w-full md:w-auto inline-flex items-center justify-center px-6 py-3 glass-card rounded-lg text-sm font-bold text-white group-hover:bg-brandRed group-hover:border-brandRed transition-colors whitespace-nowrap glossy-hover">
-                            Watch Video <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <!-- List Item 3 -->
-                <div class="animate-on-scroll group glass-card glossy-hover rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_15px_30px_rgba(229,9,20,0.15)] hover:border-brandRed/50 flex flex-col md:flex-row w-full" data-delay="300">
-                    <div class="w-full md:w-1.5 bg-brandRed h-1.5 md:h-auto z-20"></div>
-                    <div class="p-6 flex-grow flex flex-col md:flex-row items-start md:items-center gap-6 z-20">
-                        <div class="w-14 h-14 flex-shrink-0 bg-red-500/10 rounded-full flex items-center justify-center border border-brandRed/20 shadow-inner">
-                            <i class="fa-brands fa-instagram text-2xl text-brandRed group-hover:scale-110 transition-transform"></i>
-                        </div>
-                        <div class="flex-grow">
-                            <h3 class="text-xl font-bold text-white mb-2 group-hover:text-brandRed transition-colors">BMW X3 30 Drive</h3>
-                            <p class="text-gray-400 text-sm leading-relaxed">Cinematic visuals paired with precision audio editing to highlight rugged luxury.</p>
-                        </div>
-                        <a href="https://www.instagram.com/reel/DUI7wR7jckY/?igsh=eXRzZW5zamtteWI5" target="_blank" class="mt-4 md:mt-0 w-full md:w-auto inline-flex items-center justify-center px-6 py-3 glass-card rounded-lg text-sm font-bold text-white group-hover:bg-brandRed group-hover:border-brandRed transition-colors whitespace-nowrap glossy-hover">
-                            Watch Video <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- AI Feature Section -->
-        <section id="ai-feature" class="scroll-mt-24 mt-32 mb-10">
-            <div class="animate-on-scroll relative glass-card border border-brandRed/30 rounded-2xl p-8 md:p-12 overflow-hidden shadow-[0_20px_50px_rgba(229,9,20,0.1)]" data-delay="0">
-                <!-- Background glow -->
-                <div class="absolute -top-24 -right-24 w-64 h-64 bg-brandRed rounded-full mix-blend-screen filter blur-[100px] opacity-30 pointer-events-none"></div>
-                <!-- Glossy overlay -->
-                <div class="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent pointer-events-none"></div>
-                
-                <div class="relative z-10">
-                    <div class="animate-on-scroll glass-card inline-block px-4 py-1 rounded-full text-brandRed font-semibold text-sm mb-4 border-white/20" data-delay="100">
-                        ✨ Powered by Gemini AI
-                    </div>
-                    <h2 class="animate-on-scroll text-3xl md:text-4xl font-bold text-white mb-4" data-delay="200">Pitch Your Next Video</h2>
-                    <p class="animate-on-scroll text-gray-300 text-lg mb-8 max-w-2xl" data-delay="300">
-                        Want to see how I think? Enter a car model below, and my AI assistant will generate a high-octane video editing concept detailing the hook, visual style, and sound design I'd use.
-                    </p>
-
-                    <div class="animate-on-scroll flex flex-col md:flex-row gap-4 mb-8" data-delay="400">
-                        <input type="text" id="ai-car-model" placeholder="e.g., Porsche 911 GT3 RS" class="flex-grow glass-card rounded-xl px-6 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-brandRed focus:shadow-[0_0_15px_rgba(229,9,20,0.3)] transition-all">
-                        <select id="ai-video-type" class="glass-card rounded-xl px-6 py-4 text-white focus:outline-none focus:border-brandRed focus:shadow-[0_0_15px_rgba(229,9,20,0.3)] transition-all appearance-none md:w-48 cursor-pointer">
-                            <option value="Instagram Reel" class="bg-darkBg text-white">Instagram Reel</option>
-                            <option value="YouTube Short" class="bg-darkBg text-white">YouTube Short</option>
-                            <option value="YouTube Cinematic" class="bg-darkBg text-white">Cinematic Intro</option>
-                            <option value="Promo Teaser" class="bg-darkBg text-white">Promo Teaser</option>
-                        </select>
-                        <button id="ai-generate-btn" class="px-8 py-4 bg-brandRed glossy-hover glossy-btn hover:bg-red-600 text-white font-bold rounded-xl transition-all transform hover:scale-105 flex items-center justify-center gap-2 whitespace-nowrap">
-                            <span>✨ Generate Concept</span>
-                            <i id="ai-spinner" class="fa-solid fa-circle-notch animate-spin hidden"></i>
-                        </button>
-                    </div>
-
-                    <!-- AI Result Container -->
-                    <div id="ai-result-container" class="hidden glass-card rounded-xl p-6 md:p-8 transition-all duration-500 border-t border-l border-white/20">
-                        <h4 class="text-brandRed font-bold mb-4 flex items-center gap-2">
-                            <i class="fa-solid fa-bolt"></i> Edit Concept Generated
-                        </h4>
-                        <div id="ai-result-content" class="text-gray-200 leading-relaxed space-y-4 text-sm md:text-base prose prose-invert prose-p:mb-2 prose-strong:text-white prose-ul:list-disc prose-ul:ml-4">
-                            <!-- Content injected via JS -->
-                        </div>
-                    </div>
-                    
-                    <!-- Error Container -->
-                    <div id="ai-error-container" class="hidden bg-red-900/40 backdrop-blur-md border border-red-500/50 rounded-xl p-4 text-red-100 text-sm mt-4 shadow-inner">
-                        <i class="fa-solid fa-triangle-exclamation mr-2"></i> <span id="ai-error-text">An error occurred. Please try again.</span>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer / Contact Section -->
-    <footer id="contact" class="glass-card border-t border-white/10 pt-20 pb-10 mt-20 relative z-10">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <h2 class="animate-on-scroll text-3xl md:text-5xl font-bold mb-6 text-white drop-shadow-sm" data-delay="0">Let's Work Together</h2>
-            <p class="animate-on-scroll text-gray-300 text-lg mb-10" data-delay="100">Ready to collaborate on the next big project? Hit me up via email or phone.</p>
-            
-            <div class="animate-on-scroll flex flex-col sm:flex-row justify-center items-center gap-6 mb-12" data-delay="200">
-                <a href="mailto:vishalgupta.vector@gmail.com" class="flex items-center gap-3 px-8 py-4 glass-card glossy-hover hover:border-brandRed hover:text-brandRed transition-colors rounded-xl w-full sm:w-auto text-white">
-                    <i class="fa-solid fa-envelope text-xl z-20"></i>
-                    <span class="font-medium z-20">vishalgupta.vector@gmail.com</span>
-                </a>
-                <a href="tel:+919702976617" class="flex items-center gap-3 px-8 py-4 glass-card glossy-hover hover:border-brandRed hover:text-brandRed transition-colors rounded-xl w-full sm:w-auto text-white">
-                    <i class="fa-solid fa-phone text-xl z-20"></i>
-                    <span class="font-medium z-20">+91 9702976617</span>
-                </a>
-            </div>
-
-            <!-- Social Links -->
-            <div class="animate-on-scroll flex justify-center gap-6 mb-12" data-delay="300">
-                <a href="#" class="w-12 h-12 rounded-full glass-card glossy-hover flex items-center justify-center text-gray-300 hover:bg-brandRed hover:text-white hover:border-transparent transition-all transform hover:scale-110 shadow-lg">
-                    <i class="fa-brands fa-linkedin-in text-lg z-20"></i>
-                </a>
-                <a href="#" class="w-12 h-12 rounded-full glass-card glossy-hover flex items-center justify-center text-gray-300 hover:bg-brandRed hover:text-white hover:border-transparent transition-all transform hover:scale-110 shadow-lg">
-                    <i class="fa-brands fa-instagram text-lg z-20"></i>
-                </a>
-                <a href="#" class="w-12 h-12 rounded-full glass-card glossy-hover flex items-center justify-center text-gray-300 hover:bg-brandRed hover:text-white hover:border-transparent transition-all transform hover:scale-110 shadow-lg">
-                    <i class="fa-brands fa-behance text-lg z-20"></i>
-                </a>
-            </div>
-
-            <p class="animate-on-scroll text-sm text-gray-500 font-medium" data-delay="400">
-                &copy; <script>document.write(new Date().getFullYear())</script> Vishal Gupta. All rights reserved.
-            </p>
-        </div>
-    </footer>
-
-    <!-- YouTube IFrame API Script Injection -->
-    <script>
-        // Load the IFrame Player API code asynchronously.
-        var tag = document.createElement('script');
-        tag.src = "https://www.youtube.com/iframe_api";
-        var firstScriptTag = document.getElementsByTagName('script')[0];
-        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-    </script>
-
-    <!-- General Application Scripts -->
-    <script>
-        // --- Video Database (Supplied by User) ---
-        const videoDB = {
-            main: {
-                ids: ['wS2XtFlEMKY', 'OlCqiGAYPNA', 'u6kw2EYrum0', 'RrxIA9gnR5Q', '-crpMZ9l49c', 'wBy3Hnla4Ic'],
-                random: false // Plays in order
-            },
-            reel1: {
-                ids: ['cA_na6OGBaI', 'dTjRd6gBjA4', 'AYOXFYxpqAc', 'MU3jcCUJsSg'],
-                random: true  // Plays randomly on loop
-            },
-            reel2: {
-                ids: ['nrCSTQnyfi0', 'uAvtgX64caY', 'hr9rUB_c0Po', 'KFzTz6IQy8U'],
-                random: true
-            },
-            reel3: {
-                ids: ['vp7kfOlr470', 'U7kWzz8BGnY', 'ZC0uTm5UbT4', 'G7XOUT5Q2e0', 'u6xgZxMrTT4'],
-                random: true
-            }
-        };
-
-        const ytPlayers = {};
-        const progressIntervals = {};
-
-        // --- YouTube API Required Global Function ---
-        function onYouTubeIframeAPIReady() {
-            createPlayer('yt-player-main', videoDB.main, 'main-video-container');
-            createPlayer('yt-player-reel-1', videoDB.reel1, 'reel-container-1');
-            createPlayer('yt-player-reel-2', videoDB.reel2, 'reel-container-2');
-            createPlayer('yt-player-reel-3', videoDB.reel3, 'reel-container-3');
-        }
-
-        function createPlayer(elementId, dbEntry, containerId) {
-            let startIndex = dbEntry.random ? Math.floor(Math.random() * dbEntry.ids.length) : 0;
-            
-            ytPlayers[elementId] = new YT.Player(elementId, {
-                videoId: dbEntry.ids[startIndex],
-                playerVars: {
-                    'playsinline': 1,
-                    'controls': 0,      // Hide default controls
-                    'disablekb': 1,
-                    'rel': 0,           // Disable related videos
-                    'modestbranding': 1,
-                    'iv_load_policy': 3 // Hide annotations
-                },
-                events: {
-                    'onReady': (event) => onPlayerReady(event, elementId, containerId, dbEntry),
-                    'onStateChange': (event) => onPlayerStateChange(event, elementId, dbEntry)
-                }
-            });
-            ytPlayers[elementId].currentIndex = startIndex;
-        }
-
-        function onPlayerReady(event, elementId, containerId, dbEntry) {
-            const player = event.target;
-            const container = document.getElementById(containerId);
-            const muteBtn = container.querySelector('.mute-toggle');
-            const icon = muteBtn.querySelector('i');
-            
-            // Browsers STRICTLY require videos to be muted to allow custom Javascript auto-play without prior clicking.
-            player.mute(); 
-
-            // Custom Mute Button Logic
-            muteBtn.addEventListener('click', (e) => {
-                e.stopPropagation(); // Prevents clicking the mute button from messing with hover
-                if (player.isMuted()) {
-                    player.unMute();
-                    icon.classList.remove('fa-volume-xmark');
-                    icon.classList.add('fa-volume-high');
-                } else {
-                    player.mute();
-                    icon.classList.remove('fa-volume-high');
-                    icon.classList.add('fa-volume-xmark');
-                }
-            });
-
-            // Hover to Play Logic
-            container.addEventListener('mouseenter', () => {
-                player.playVideo();
-            });
-
-            container.addEventListener('mouseleave', () => {
-                player.pauseVideo();
-            });
-        }
-
-        function onPlayerStateChange(event, elementId, dbEntry) {
-            const player = event.target;
-            const containerId = player.getIframe().closest('[id^="main-video"], [id^="reel-container"]').id;
-            const container = document.getElementById(containerId);
-            const progressBar = container.querySelector('.progress-bar');
-
-            // Handle Looping Logic when a video finishes
-            if (event.data === YT.PlayerState.ENDED) {
-                let nextIndex;
-                if (dbEntry.random) {
-                    nextIndex = Math.floor(Math.random() * dbEntry.ids.length);
-                } else {
-                    nextIndex = (ytPlayers[elementId].currentIndex + 1) % dbEntry.ids.length;
-                }
-                ytPlayers[elementId].currentIndex = nextIndex;
-                player.loadVideoById(dbEntry.ids[nextIndex]);
-                player.playVideo(); // Force play next video since user is still hovering
-            }
-
-            // Handle Custom Timeline Progress
-            if (event.data === YT.PlayerState.PLAYING) {
-                if (progressIntervals[elementId]) clearInterval(progressIntervals[elementId]);
-                
-                progressIntervals[elementId] = setInterval(() => {
-                    const duration = player.getDuration();
-                    const current = player.getCurrentTime();
-                    if (duration > 0) {
-                        const percent = (current / duration) * 100;
-                        progressBar.style.width = percent + '%';
-                    }
-                }, 250);
-            } else {
-                // Pause tracking to save performance if paused/ended
-                if (progressIntervals[elementId]) {
-                    clearInterval(progressIntervals[elementId]);
-                }
-            }
-        }
-
-        // --- Standard UI Scripts ---
-        document.addEventListener('DOMContentLoaded', () => {
-            
-            // Custom Cursor Logic
-            const cursorDot = document.querySelector('.cursor-dot');
-            const cursorOutline = document.querySelector('.cursor-outline');
-            
-            if (cursorDot && cursorOutline && window.matchMedia("(pointer: fine)").matches) {
-                let mouseX = 0;
-                let mouseY = 0;
-                let outlineX = 0;
-                let outlineY = 0;
-
-                window.addEventListener('mousemove', (e) => {
-                    mouseX = e.clientX;
-                    mouseY = e.clientY;
-                    
-                    // Update dot instantly
-                    cursorDot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
-                });
-
-                // Smooth trailing effect for outline
-                function animateOutline() {
-                    let distX = mouseX - outlineX;
-                    let distY = mouseY - outlineY;
-                    
-                    outlineX = outlineX + (distX * 0.15);
-                    outlineY = outlineY + (distY * 0.15);
-                    
-                    cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px)`;
-                    requestAnimationFrame(animateOutline);
-                }
-                animateOutline();
-
-                // Custom cursor reacts to the video player containers
-                const interactables = document.querySelectorAll('a, button, input, select, iframe, [id^="reel-container"], [id^="main-video"]');
-                interactables.forEach(el => {
-                    if (el) {
-                        el.addEventListener('mouseenter', () => cursorOutline.classList.add('hovering'));
-                        el.addEventListener('mouseleave', () => cursorOutline.classList.remove('hovering'));
-                    }
-                });
-            }
-
-            // 1. Initial Load Animations (Hero)
-            const heroElements = document.querySelectorAll('.hero-animate');
-            heroElements.forEach((el, index) => {
-                el.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-1000', 'ease-out');
-                setTimeout(() => {
-                    el.classList.remove('opacity-0', 'translate-y-8');
-                    el.classList.add('opacity-100', 'translate-y-0');
-                }, 100 + (index * 150));
-            });
-
-            // 2. Scroll Intersect Animations
-            const scrollElements = document.querySelectorAll('.animate-on-scroll');
-            scrollElements.forEach(el => {
-                el.classList.add('opacity-0', 'translate-y-10', 'transition-all', 'duration-700', 'ease-out');
-            });
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        const delay = parseInt(entry.target.getAttribute('data-delay') || '0');
-                        setTimeout(() => {
-                            entry.target.classList.remove('opacity-0', 'translate-y-10');
-                            entry.target.classList.add('opacity-100', 'translate-y-0');
-                        }, delay);
-                        observer.unobserve(entry.target); 
-                    }
-                });
-            }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
-            scrollElements.forEach(el => observer.observe(el));
-            
-            // AI Feature Logic
-            const generateBtn = document.getElementById('ai-generate-btn');
-            const carModelInput = document.getElementById('ai-car-model');
-            const videoTypeSelect = document.getElementById('ai-video-type');
-            const spinner = document.getElementById('ai-spinner');
-            const resultContainer = document.getElementById('ai-result-container');
-            const resultContent = document.getElementById('ai-result-content');
-            const errorContainer = document.getElementById('ai-error-container');
-            const errorText = document.getElementById('ai-error-text');
-
-            const apiKey = ""; 
-            
-            async function fetchWithRetry(url, options, maxRetries = 5) {
-                let delay = 1000;
-                for (let i = 0; i < maxRetries; i++) {
-                    try {
-                        const response = await fetch(url, options);
-                        if (!response.ok) {
-                            throw new Error(`HTTP error! status: ${response.status}`);
-                        }
-                        return await response.json();
-                    } catch (error) {
-                        if (i === maxRetries - 1) throw error;
-                        await new Promise(resolve => setTimeout(resolve, delay));
-                        delay *= 2; 
-                    }
-                }
-            }
-
-            if (generateBtn && carModelInput) {
-                generateBtn.addEventListener('click', async () => {
-                    const carModel = carModelInput.value.trim();
-                    const videoType = videoTypeSelect ? videoTypeSelect.value : 'Instagram Reel';
-
-                    if (!carModel) {
-                        carModelInput.classList.add('border-brandRed');
-                        setTimeout(() => carModelInput.classList.remove('border-brandRed'), 1000);
-                        return;
-                    }
-
-                    generateBtn.disabled = true;
-                    generateBtn.classList.add('opacity-80', 'cursor-not-allowed');
-                    if(spinner) spinner.classList.remove('hidden');
-                    if(resultContainer) resultContainer.classList.add('hidden');
-                    if(errorContainer) errorContainer.classList.add('hidden');
-
-                    const systemInstruction = "You are an expert automotive video editor like Vishal Gupta. You specialize in dynamic, fast-paced car edits, heavy bass sound design, speed ramping, and slick transitions. Return the response in clean, valid HTML using ONLY <p>, <strong>, and <ul>/<li> tags. Do not use markdown backticks.";
-                    const userPrompt = `Generate a high-octane 3-part video editing concept for a ${carModel} formatted as a ${videoType}. Include: \n1. The Hook (first 3 seconds to grab attention).\n2. Visual Style (camera movements, speed ramps, color grading).\n3. Audio & Sound Design (music genre, sfx like engine revs, wooshes).\nKeep it concise, professional, and exciting (under 150 words total).`;
-
-                    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-                    
-                    const payload = {
-                        contents: [{ parts: [{ text: userPrompt }] }],
-                        systemInstruction: { parts: [{ text: systemInstruction }] }
-                    };
-
-                    try {
-                        const data = await fetchWithRetry(url, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-
-                        let generatedHtml = data.candidates?.[0]?.content?.parts?.[0]?.text || "No concept generated.";
-                        generatedHtml = generatedHtml.replace(/```html/g, '').replace(/```/g, '');
-
-                        if(resultContent) resultContent.innerHTML = generatedHtml;
-                        
-                        if(resultContainer) {
-                            resultContainer.classList.remove('hidden');
-                            resultContainer.classList.add('animate-fade-in-up');
-                            setTimeout(() => {
-                                resultContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-                            }, 100);
-                        }
-
-                    } catch (error) {
-                        if(errorText) errorText.textContent = "Failed to connect to the AI brainstormer. Please try again later.";
-                        if(errorContainer) errorContainer.classList.remove('hidden');
-                    } finally {
-                        generateBtn.disabled = false;
-                        generateBtn.classList.remove('opacity-80', 'cursor-not-allowed');
-                        if(spinner) spinner.classList.add('hidden');
-                    }
-                });
-                
-                carModelInput.addEventListener('keypress', (e) => {
-                    if (e.key === 'Enter') generateBtn.click();
-                });
-            }
-        });
-    </script>
-</body>
-</html>
+                    <button class="mute-toggle absolute top-4 right-4 z-20 w-10 h-10 glass-card hover:bg-brandRed rounded-full flex items-center justify-center text-w
